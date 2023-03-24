@@ -12,7 +12,6 @@ import os
 ///
 /// Custom Emojis are in the format `:emoji:`.
 /// Supports local and remote custom emojis.
-/// Remote emojis are resolved using [Nuke](https://github.com/kean/Nuke)
 public struct EmojiText: View {
     @Environment(\.emojiImagePipeline) var imagePipeline
     @Environment(\.placeholderEmoji) var placeholderEmoji

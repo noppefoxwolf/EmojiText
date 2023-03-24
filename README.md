@@ -3,8 +3,6 @@
 ![](https://img.shields.io/badge/Swift-5.7-orange?style=flat-square)
 ![](https://img.shields.io/badge/Platforms-iOS%20%7C%20macOS%20%7C%20tvOS%20%7C%20watchOS-lightgrey?style=flat-square)
 
-Render Custom Emoji in `Text`. Supports local and remote emojis. Remote emojis are loaded and cached using [Nuke](https://github.com/kean/Nuke)
-
 ## Usage
 
 Remote emoji
@@ -51,10 +49,22 @@ or
 .placeholderEmoji(image: /* some UIImage or NSImage */)
 ```
 
-Remote emojis use `ImagePipeline.shared` from [Nuke](https://github.com/kean/Nuke) to load them, but you can provide a custom pipeline with
+Remote emojis use `ImagePipeline`.
+You can provide a custom pipeline with following code.
 
 ```swift
-.environment(\.emojiImagePipeline, ImagePipeline())
+// https://github.com/kean/Nuke
+import Nuke
+
+class NukeImagePipeline: ImagePipeline {
+    override func image(for url: URL) async throws -> UIImage {
+        try await Nuke.ImagePipeline.shared.image(for: url)
+    }
+}
+```
+
+```swift
+.environment(\.emojiImagePipeline, NukeImagePipeline())
 ```
 
 ## License

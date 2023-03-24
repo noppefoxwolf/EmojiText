@@ -1,4 +1,3 @@
-
 #if !os(macOS)
 import UIKit.UIImage
 /// Alias for `UIImage`.
