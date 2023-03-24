@@ -10,6 +10,8 @@ public typealias PlatformImage = NSImage
 #endif
 
 open class ImagePipeline {
+    public init() {}
+    
     open func image(for url: URL) async throws -> UIImage {
         fatalError()
     }
