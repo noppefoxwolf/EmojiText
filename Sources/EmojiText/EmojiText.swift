@@ -38,6 +38,9 @@ public struct EmojiText: View {
     public var body: some View {
         rendered
             .task(id: hashValue) {
+                preRendered = nil
+                renderedEmojis = [:]
+                
                 guard !emojis.isEmpty else {
                     self.renderedEmojis = [:]
                     return
