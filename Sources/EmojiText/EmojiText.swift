@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Nuke
 import os
 
 /// Text with support for custom emojis
@@ -280,9 +279,13 @@ struct EmojiText_Previews: PreviewProvider {
                 Text("Markdown")
             }
         }
-        .environment(\.emojiImagePipeline, ImagePipeline { configuration in
-            configuration.imageCache = nil
-            configuration.dataCache = nil
-        })
+        .environment(\.emojiImagePipeline, PreviewImagePipeline())
+    }
+}
+
+final class PreviewImagePipeline: ImagePipeline {
+    override func image(for url: URL) async throws -> PlatformImage {
+        let (data, _) = try await URLSession.shared.data(from: url)
+        return PlatformImage(data: data)!
     }
 }

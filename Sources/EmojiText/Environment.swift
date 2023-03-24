@@ -6,10 +6,9 @@
 //
 
 import SwiftUI
-import Nuke
 
-struct ImagePipelineKey: EnvironmentKey {
-    static var defaultValue: ImagePipeline { .shared }
+public struct ImagePipelineKey: EnvironmentKey {
+    public static var defaultValue: ImagePipeline { ImagePipeline() }
 }
 
 struct PlaceholderEmojiKey: EnvironmentKey {
