@@ -27,6 +27,7 @@ public struct EmojiText: View {
     let isMarkdown: Bool
     let emojis: [any CustomEmoji]
     
+    var isBold: Bool = false
     var prepend: (() -> Text)?
     var append: (() -> Text)?
     
@@ -129,6 +130,12 @@ public struct EmojiText: View {
     
     // MARK: - Modifier
     
+    public func bold() -> Self {
+        var view = self
+        view.isBold = true
+        return view
+    }
+    
     /// Prepend `Text` to the `EmojiText`
     ///
     /// - Parameter text: Callback generating the text to prepend
@@ -187,9 +194,17 @@ public struct EmojiText: View {
         
         if renderedEmojis.isEmpty {
             if isMarkdown {
-                result = result + Text(markdown: preRendered)
+                if isBold {
+                    result = result + Text(markdown: preRendered).bold()
+                } else {
+                    result = result + Text(markdown: preRendered)
+                }
             } else {
-                result = result + Text(verbatim: preRendered)
+                if isBold {
+                    result = result + Text(verbatim: preRendered).bold()
+                } else {
+                    result = result + Text(verbatim: preRendered)
+                }
             }
         } else {
             let splits: [String]
@@ -209,9 +224,17 @@ public struct EmojiText: View {
                         result = result + Text("\(image.image)")
                     }
                 } else if isMarkdown {
-                    result = result + Text(markdown: substring)
+                    if isBold {
+                        result = result + Text(markdown: substring).bold()
+                    } else {
+                        result = result + Text(markdown: substring)
+                    }
                 } else {
-                    result = result + Text(verbatim: substring)
+                    if isBold {
+                        result = result + Text(verbatim: substring).bold()
+                    } else {
+                        result = result + Text(verbatim: substring)
+                    }
                 }
             }
         }
@@ -268,6 +291,7 @@ struct EmojiText_Previews: PreviewProvider {
                 
                 EmojiText(markdown: "**Hello** *World* :mastodon:",
                           emojis: emojis)
+                .bold()
                 .prepend {
                     Text("Prepended - ")
                 }
@@ -285,6 +309,6 @@ struct EmojiText_Previews: PreviewProvider {
 final class PreviewImagePipeline: ImagePipeline {
     override func image(for url: URL) async throws -> PlatformImage {
         let (data, _) = try await URLSession.shared.data(from: url)
-        return PlatformImage(data: data)!
+        return PlatformImage(data: data) ?? PlatformImage()
     }
 }
