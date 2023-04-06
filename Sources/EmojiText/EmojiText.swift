@@ -37,15 +37,7 @@ public struct EmojiText: View {
     public var body: some View {
         rendered
             .task(id: hashValue) {
-                guard !emojis.isEmpty else {
-                    self.renderedEmojis = [:]
-                    return
-                }
-                
-                // Set placeholders
-                self.renderedEmojis = loadPlaceholders()
-                
-                // Load actual emojis
+                guard !emojis.isEmpty else { return }
                 self.renderedEmojis = await loadEmojis()
             }
             .onChange(of: renderedEmojis) { emojis in
@@ -115,6 +107,7 @@ public struct EmojiText: View {
         self.raw = markdown
         self.isMarkdown = true
         self.emojis = emojis
+        self.renderedEmojis = loadPlaceholders()
     }
     
     /// Initialize a ``EmojiText`` with support for custom emojis
