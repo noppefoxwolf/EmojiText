@@ -24,6 +24,7 @@ public struct EmojiText: View {
     var scaleFactor: CGFloat = 1.0
     
     let raw: String
+    let placeholder: String?
     let isMarkdown: Bool
     let emojis: [any CustomEmoji]
     
@@ -111,10 +112,11 @@ public struct EmojiText: View {
     /// - Parameters:
     ///     - markdown: Markdown formatted text to render
     ///     - emojis: Array of custom emojis to render
-    public init(markdown: String, emojis: [any CustomEmoji]) {
+    public init(markdown: String, emojis: [any CustomEmoji], placeholder: String? = nil) {
         self.raw = markdown
         self.isMarkdown = true
         self.emojis = emojis
+        self.placeholder = placeholder
     }
     
     /// Initialize a ``EmojiText`` with support for custom emojis
@@ -122,10 +124,11 @@ public struct EmojiText: View {
     /// - Parameters:
     ///     - verbatim: A string to display without localization.
     ///     - emojis: Array of custom emojis to render
-    public init(verbatim: String, emojis: [any CustomEmoji]) {
+    public init(verbatim: String, emojis: [any CustomEmoji], placeholder: String? = nil) {
         self.raw = verbatim
         self.isMarkdown = false
         self.emojis = emojis
+        self.placeholder = placeholder
     }
     
     // MARK: - Modifier
@@ -190,7 +193,7 @@ public struct EmojiText: View {
     var rendered: Text {
         var result = prepend?() ?? Text(verbatim: "")
         
-        let preRendered = self.preRendered ?? raw
+        let preRendered = self.preRendered ?? placeholder ?? raw
         
         if renderedEmojis.isEmpty {
             if isMarkdown {
