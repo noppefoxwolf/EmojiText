@@ -190,7 +190,8 @@ public struct EmojiText: View {
     var rendered: Text {
         var result = prepend?() ?? Text(verbatim: "")
         
-        let preRendered = self.preRendered ?? raw
+        //let preRendered = self.preRendered ?? raw
+        let preRendered = self.preRendered ?? "..."
         
         if renderedEmojis.isEmpty {
             if isMarkdown {
